@@ -82,7 +82,7 @@ export function convertBookingsToTransactions(bookings: BookingRecord[]): Transa
     paymentMethod: (b.paymentMethod as any) || "Stripe",
     status: b.status,
     amount: b.totalAmount,
-    currency: "£",
+    currency: "$",
     date: b.createdAt,
   }));
 }

@@ -11,7 +11,7 @@ import { FeatureCards } from "@/components/customer/FeatureCards";
 import { Testimonials } from "@/components/customer/Testimonials";
 import { CustomerFooter } from "@/components/customer/Footer";
 import { AiRecommendationModal } from "@/components/customer/AiRecommendationModal";
-import { CustomerVehicle } from "@/data/vehicles";
+import { CustomerVehicle, INITIAL_CUSTOMER_VEHICLES } from "@/data/vehicles";
 import { toCustomerVehicles } from "@/lib/vehicleMapper";
 import { useRouter } from "next/navigation";
 
@@ -27,9 +27,16 @@ export default function CustomerHomePage() {
       try {
         const res = await fetch("/api/vehicles", { cache: "no-store" });
         const data = await res.json();
-        if (!cancelled) setVehicleList(toCustomerVehicles(data.vehicles || []));
+        if (!cancelled) {
+          if (data.vehicles && data.vehicles.length > 0) {
+            setVehicleList(toCustomerVehicles(data.vehicles));
+          } else {
+            setVehicleList(INITIAL_CUSTOMER_VEHICLES);
+          }
+        }
       } catch (err) {
         console.error("Failed to load vehicles from API:", err);
+        if (!cancelled) setVehicleList(INITIAL_CUSTOMER_VEHICLES);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -72,5 +79,3 @@ export default function CustomerHomePage() {
     </div>
   );
 }
-
-

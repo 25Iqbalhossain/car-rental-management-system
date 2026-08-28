@@ -1,15 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { MapPin, Calendar, Clock, Search, AlertCircle, CheckCircle2 } from "lucide-react";
+import { MapPin, Calendar, Search, AlertCircle, CheckCircle2 } from "lucide-react";
 
 export const RentalSearch: React.FC<{ onSearch?: (criteria: any) => void }> = ({ onSearch }) => {
   const [pLoc, setPLoc] = useState("");
   const [pDate, setPDate] = useState("2026-08-28");
-  const [pTime, setPTime] = useState("10:00");
   const [dLoc, setDLoc] = useState("");
   const [dDate, setDDate] = useState("2026-08-31");
-  const [dTime, setDTime] = useState("10:00");
   const [errs, setErrs] = useState<string[]>([]);
   const [ok, setOk] = useState(false);
   const [locations, setLocations] = useState<string[]>([]);
@@ -50,13 +48,13 @@ export const RentalSearch: React.FC<{ onSearch?: (criteria: any) => void }> = ({
     if (list.length > 0) { setErrs(list); setOk(false); return; }
     setErrs([]); setOk(true);
     if (onSearch) {
-      onSearch({ pickupLocation: pLoc, pickupDate: pDate, pickupTime: pTime, dropoffLocation: dLoc, dropoffDate: dDate, dropoffTime: dTime });
+      onSearch({ pickupLocation: pLoc, pickupDate: pDate, dropoffLocation: dLoc, dropoffDate: dDate });
     }
     document.getElementById("popular-deals")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <section id="rental-search" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-8 relative z-20">
+    <section id="rental-search" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-10 relative z-20">
       <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-xl border border-slate-200">
         {errs.length > 0 && (
           <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs">
@@ -104,24 +102,6 @@ export const RentalSearch: React.FC<{ onSearch?: (criteria: any) => void }> = ({
               />
             </div>
 
-            {/* Pick-Up Time */}
-            <div className="lg:col-span-1 space-y-1">
-              <label className="text-[11px] font-bold text-slate-700 flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-orange-500 shrink-0" /> Time
-              </label>
-              <select
-                value={pTime}
-                onChange={(e) => setPTime(e.target.value)}
-                className="w-full h-10 px-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 focus:outline-none transition-all"
-              >
-                <option value="09:00">09:00</option>
-                <option value="10:00">10:00</option>
-                <option value="12:00">12:00</option>
-                <option value="14:00">14:00</option>
-                <option value="18:00">18:00</option>
-              </select>
-            </div>
-
             {/* Drop-Off Location */}
             <div className="lg:col-span-3 space-y-1">
               <label className="text-[11px] font-bold text-slate-700 flex items-center gap-1">
@@ -156,7 +136,7 @@ export const RentalSearch: React.FC<{ onSearch?: (criteria: any) => void }> = ({
             </div>
 
             {/* Search Submit CTA */}
-            <div className="sm:col-span-2 lg:col-span-1 flex items-end">
+            <div className="sm:col-span-2 lg:col-span-2 flex items-end">
               <button
                 type="submit"
                 className="w-full h-10 px-4 bg-orange-500 hover:bg-orange-600 active:scale-[0.98] text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-orange-500/20 transition-all cursor-pointer"
@@ -171,4 +151,3 @@ export const RentalSearch: React.FC<{ onSearch?: (criteria: any) => void }> = ({
     </section>
   );
 };
-

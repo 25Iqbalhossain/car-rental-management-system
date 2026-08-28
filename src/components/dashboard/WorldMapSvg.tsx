@@ -3,11 +3,13 @@ import React from "react";
 interface WorldMapSvgProps {
   selectedRegion?: string;
   highlightedRegions?: string[];
+  onSelectRegion?: (regionId: string) => void;
 }
 
 export const WorldMapSvg: React.FC<WorldMapSvgProps> = ({
   selectedRegion = "africa",
   highlightedRegions = ["north-america", "asia"],
+  onSelectRegion,
 }) => {
   const getRegionFill = (regionId: string) => {
     if (regionId === selectedRegion) return "#FFA64A";
@@ -19,11 +21,15 @@ export const WorldMapSvg: React.FC<WorldMapSvgProps> = ({
     <svg
       viewBox="0 0 2000 1001"
       preserveAspectRatio="xMidYMid meet"
-      className="w-full h-auto"
+      className="w-full h-auto select-none"
       xmlns="http://www.w3.org/2000/svg"
     >
       {/* ======================== NORTH AMERICA ======================== */}
-      <g id="north-america">
+      <g
+        id="north-america"
+        className="cursor-pointer hover:opacity-80 transition-opacity"
+        onClick={() => onSelectRegion?.("north-america")}
+      >
         {/* Mainland: Alaska → Pacific coast → Central America → Gulf of Mexico → Atlantic coast → Arctic Canada */}
         <path
           fill={getRegionFill("north-america")}
@@ -48,7 +54,11 @@ export const WorldMapSvg: React.FC<WorldMapSvgProps> = ({
       </g>
 
       {/* ======================== SOUTH AMERICA ======================== */}
-      <g id="south-america">
+      <g
+        id="south-america"
+        className="cursor-pointer hover:opacity-80 transition-opacity"
+        onClick={() => onSelectRegion?.("south-america")}
+      >
         {/* Mainland: Colombia W coast → Chile → Tierra del Fuego → Argentina → Brazil bulge → Venezuela → Colombia */}
         <path
           fill={getRegionFill("south-america")}
@@ -59,7 +69,11 @@ export const WorldMapSvg: React.FC<WorldMapSvgProps> = ({
       </g>
 
       {/* ======================== EUROPE ======================== */}
-      <g id="europe">
+      <g
+        id="europe"
+        className="cursor-pointer hover:opacity-80 transition-opacity"
+        onClick={() => onSelectRegion?.("europe")}
+      >
         {/* Continental Europe + Scandinavia: Portugal → Atlantic coast → Scandinavia → E Europe → Mediterranean → Iberia */}
         <path
           fill={getRegionFill("europe")}
@@ -91,7 +105,11 @@ export const WorldMapSvg: React.FC<WorldMapSvgProps> = ({
       </g>
 
       {/* ======================== AFRICA ======================== */}
-      <g id="africa">
+      <g
+        id="africa"
+        className="cursor-pointer hover:opacity-80 transition-opacity"
+        onClick={() => onSelectRegion?.("africa")}
+      >
         {/* Mainland: Morocco → Mediterranean coast → Suez → Horn of Africa → E coast → Cape of Good Hope → W coast → Sahara → Morocco */}
         <path
           fill={getRegionFill("africa")}
@@ -109,7 +127,11 @@ export const WorldMapSvg: React.FC<WorldMapSvgProps> = ({
       </g>
 
       {/* ======================== ASIA ======================== */}
-      <g id="asia">
+      <g
+        id="asia"
+        className="cursor-pointer hover:opacity-80 transition-opacity"
+        onClick={() => onSelectRegion?.("asia")}
+      >
         {/* Main landmass: Turkey/Caucasus → Urals → Arctic Russia → Kamchatka → China/Korea → SE Asia/Malay → India → Iran → Iraq → Turkey */}
         <path
           fill={getRegionFill("asia")}
@@ -183,7 +205,11 @@ export const WorldMapSvg: React.FC<WorldMapSvgProps> = ({
       </g>
 
       {/* ======================== OCEANIA ======================== */}
-      <g id="oceania">
+      <g
+        id="oceania"
+        className="cursor-pointer hover:opacity-80 transition-opacity"
+        onClick={() => onSelectRegion?.("oceania")}
+      >
         {/* Australia: NW → N coast → Gulf of Carpentaria → NE → E coast → SE → S coast → SW → W coast */}
         <path
           fill={getRegionFill("oceania")}

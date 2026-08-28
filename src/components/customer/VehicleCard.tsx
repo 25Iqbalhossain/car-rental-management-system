@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { Users, DoorClosed, Gauge, Star, Check } from "lucide-react";
+import { Heart } from "lucide-react";
 import { CustomerVehicle } from "@/data/vehicles";
 
 interface VehicleCardProps {
@@ -11,75 +11,57 @@ interface VehicleCardProps {
 }
 
 export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, onRentNow }) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
-      {/* Vehicle Image & Badges */}
-      <div className="relative h-48 sm:h-52 bg-slate-100 overflow-hidden">
+    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
+      {/* Image */}
+      <div className="relative aspect-[4/3] w-full bg-slate-100 overflow-hidden">
         <img
           src={vehicle.image}
           alt={vehicle.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover"
         />
-        <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-xs text-white text-[11px] font-bold px-2.5 py-1 rounded-full">
-          {vehicle.category}
-        </div>
-        {vehicle.rating && (
-          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-xs text-slate-900 text-xs font-extrabold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
-            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-            <span>{vehicle.rating}</span>
-          </div>
-        )}
       </div>
 
-      {/* Details Body */}
-      <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-        <div>
-          <div className="flex items-center justify-between mb-1">
-            <h3 className="font-extrabold text-base text-slate-900 group-hover:text-orange-500 transition-colors">
-              {vehicle.name}
-            </h3>
-          </div>
-          <span className="text-[11px] font-medium text-slate-500">
-            NHTSA Decoded Model • {vehicle.brand}
-          </span>
-
-          {/* Specs icons */}
-          <div className="grid grid-cols-3 gap-2 my-4 pt-3 border-t border-slate-100 text-xs text-slate-600 font-semibold">
-            <div className="flex items-center gap-1.5 bg-slate-50 p-2 rounded-xl">
-              <Gauge className="w-4 h-4 text-orange-500" />
-              <span className="truncate">{vehicle.transmission}</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-slate-50 p-2 rounded-xl">
-              <Users className="w-4 h-4 text-orange-500" />
-              <span>{vehicle.seats} Seats</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-slate-50 p-2 rounded-xl">
-              <DoorClosed className="w-4 h-4 text-orange-500" />
-              <span>{vehicle.doors} Doors</span>
-            </div>
-          </div>
+      {/* Content */}
+      <div className="p-4 flex flex-col flex-1">
+        <div className="flex items-start justify-between mb-1">
+          <h3 className="font-semibold text-slate-900 text-base line-clamp-1 mr-2">
+            {vehicle.name}
+          </h3>
+          <button 
+            onClick={(e) => { e.preventDefault(); setIsFavorite(!isFavorite); }}
+            className="text-slate-400 hover:text-red-500 transition-colors flex-shrink-0"
+          >
+            <Heart className={`w-5 h-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
+          </button>
         </div>
+        
+        <p className="text-xs text-slate-500 mb-4">
+          {vehicle.transmission} • {vehicle.seats} Seats • {vehicle.doors} Doors
+        </p>
 
-        {/* Pricing & CTA */}
-        <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+        {/* Spacer to push footer to bottom */}
+        <div className="mt-auto pt-4 flex items-center justify-between border-t border-slate-100">
           <div>
-            <span className="text-xl font-extrabold text-slate-900">£{vehicle.pricePerDay}</span>
-            <span className="text-xs text-slate-500 font-medium"> / day</span>
+            <span className="font-semibold text-slate-900">£{vehicle.pricePerDay.toFixed(2)}</span>
+            <span className="text-xs text-slate-500"> / day</span>
           </div>
 
           {onRentNow ? (
             <button
               onClick={() => onRentNow(vehicle)}
-              className="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs rounded-xl shadow-md shadow-orange-500/20 transition-all flex items-center gap-1.5"
+              className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors"
             >
-              <span>Rent Now</span>
+              Rent Now
             </button>
           ) : (
             <Link
               href={`/booking?vehicleId=${vehicle.id}`}
-              className="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs rounded-xl shadow-md shadow-orange-500/20 transition-all flex items-center gap-1.5"
+              className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors inline-block"
             >
-              <span>Rent Now</span>
+              Rent Now
             </Link>
           )}
         </div>

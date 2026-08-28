@@ -12,7 +12,7 @@ export const WhyChooseUs: React.FC = () => {
   ];
 
   return (
-    <section id="why-choose-us" className="py-12 lg:py-16 bg-white overflow-hidden">
+    <section id="why-choose-us" className="py-8 lg:py-10 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Visual Illustration */}
@@ -21,7 +21,7 @@ export const WhyChooseUs: React.FC = () => {
               <img
                 src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=800"
                 alt="Why Choose Us Vehicle"
-                className="w-full h-72 sm:h-80 object-cover opacity-95 hover:scale-105 transition-transform duration-500"
+                className="w-full h-56 sm:h-64 object-cover opacity-95 hover:scale-105 transition-transform duration-500"
               />
             </div>
           </div>
@@ -32,8 +32,8 @@ export const WhyChooseUs: React.FC = () => {
               <span className="text-[11px] font-bold uppercase tracking-widest text-orange-500 bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
                 WHY CHOOSE US
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                We Provide The Best Customer <span className="text-orange-500">Rental Experience</span>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+                We Provide The Best Customer <span className="text-orange-500">Experience</span>
               </h2>
             </div>
 
@@ -54,4 +54,3 @@ export const WhyChooseUs: React.FC = () => {
     </section>
   );
 };
-

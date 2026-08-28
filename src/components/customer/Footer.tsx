@@ -6,9 +6,9 @@ import { Car } from "lucide-react";
 
 export const CustomerFooter: React.FC = () => {
   return (
-    <footer className="bg-slate-100 text-slate-600 pt-12 pb-8 border-t border-slate-200">
+    <footer className="bg-slate-100 text-slate-600 pt-8 pb-6 border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-8 border-b border-slate-200">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 pb-6 border-b border-slate-200">
           {/* Brand Column */}
           <div className="lg:col-span-2 space-y-3">
             <Link href="/" className="flex items-center gap-2">
@@ -70,4 +70,3 @@ export const CustomerFooter: React.FC = () => {
     </footer>
   );
 };
-

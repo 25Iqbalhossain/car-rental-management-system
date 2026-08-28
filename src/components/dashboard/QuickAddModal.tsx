@@ -245,31 +245,31 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
 
 
   return (
-    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 lg:p-4">
-      <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95">
+    <div className="fixed inset-0 bg-slate-900/45 z-50 flex items-center justify-center p-3 lg:p-4">
+      <div className="bg-white rounded-lg max-w-lg w-full max-h-[90vh] flex flex-col shadow-xl overflow-hidden animate-in fade-in zoom-in-95">
         {/* Header */}
-        <div className="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50 shrink-0">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
-              <Car className="w-4 h-4" />
+        <div className="px-4 py-2.5 border-b border-slate-100 flex items-center justify-between bg-slate-50 shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+              <Car className="w-3.5 h-3.5" />
             </div>
             <div>
-              <h3 className="font-extrabold text-sm text-slate-900 leading-tight">Create Vehicle & Rental</h3>
-              <p className="text-[10px] text-slate-500 font-medium">NHTSA vPIC Vehicle API Integration</p>
+              <h3 className="font-bold text-xs text-slate-900 leading-tight">Create Product</h3>
+              <p className="text-[10px] text-slate-500 font-medium">NHTSA vPIC Vehicle API</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-200 transition-colors cursor-pointer"
+            className="p-1 text-slate-400 hover:text-slate-700 rounded hover:bg-slate-200 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Scrollable Form */}
-        <form onSubmit={handleSubmit} className="p-4 lg:p-5 overflow-y-auto space-y-4 text-xs">
+        <form onSubmit={handleSubmit} className="p-3.5 overflow-y-auto space-y-3 text-xs">
           {/* Section 1: VIN Decoder (Requirement 3) */}
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+          <div className="bg-slate-50 border border-slate-200 rounded-md p-2.5 space-y-2">
             <div className="flex items-center justify-between">
               <label className="font-extrabold text-slate-800 flex items-center gap-1.5 text-[11px]">
                 <Cpu className="w-3.5 h-3.5 text-orange-500" />
@@ -284,13 +284,13 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
                 value={vinInput}
                 onChange={(e) => setVinInput(e.target.value)}
                 placeholder="e.g. 1HGCR2F83HA000000"
-                className="flex-1 px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1.5 focus:ring-orange-500 font-mono tracking-wide uppercase"
+                className="flex-1 px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 font-mono uppercase"
               />
               <button
                 type="button"
                 onClick={handleDecodeVin}
                 disabled={isDecodingVin}
-                className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-[11px] rounded-lg flex items-center gap-1 transition-all disabled:opacity-50 cursor-pointer"
+                className="px-3 py-1.5 bg-[#0B2F4F] hover:bg-slate-800 text-white font-bold text-[11px] rounded flex items-center gap-1 transition-all disabled:opacity-50 cursor-pointer"
               >
                 {isDecodingVin ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Search className="w-3.5 h-3.5" />}
                 <span>Decode</span>
@@ -299,7 +299,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
 
             {/* Validation Message / Error (Requirement 3) */}
             {vinError && (
-              <div className="flex items-center gap-1.5 p-2 bg-rose-50 border border-rose-200 text-rose-700 rounded-lg text-[11px] font-semibold">
+              <div className="flex items-center gap-1.5 p-2 bg-rose-50 border border-rose-200 text-rose-700 rounded text-[11px] font-semibold">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{vinError}</span>
               </div>
@@ -307,7 +307,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
 
             {/* Success Decoded Specs Display (Requirement 3: all available fields) */}
             {decodedSpecs && (
-              <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-900 space-y-1 text-[11px]">
+              <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded text-emerald-900 space-y-1 text-[11px]">
                 <div className="flex items-center gap-1.5 font-extrabold text-emerald-700">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>VIN Specs Decoded Successfully</span>
@@ -341,7 +341,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
                 Vehicle Brand (Make) <span className="text-rose-500">*</span>
               </label>
               {isLoadingMakes ? (
-                <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 rounded-lg text-[11px] text-slate-500">
+                <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 rounded text-[11px] text-slate-500">
                   <Loader2 className="w-3.5 h-3.5 animate-spin text-orange-500" />
                   <span>Loading Makes...</span>
                 </div>
@@ -351,7 +351,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
                 <select
                   value={selectedBrand}
                   onChange={handleBrandChange}
-                  className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg font-bold text-slate-800 focus:outline-none focus:ring-1.5 focus:ring-orange-500 cursor-pointer"
+                  className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded font-semibold text-slate-800 focus:outline-none focus:ring-1 focus:ring-orange-500 cursor-pointer"
                 >
                   {makesList.map((m) => (
                     <option key={m.MakeId || m.MakeName} value={m.MakeName}>
@@ -370,7 +370,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
               <select
                 value={selectedYear}
                 onChange={handleYearChange}
-                className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg font-bold text-slate-800 focus:outline-none focus:ring-1.5 focus:ring-orange-500 cursor-pointer"
+                className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded font-semibold text-slate-800 focus:outline-none focus:ring-1 focus:ring-orange-500 cursor-pointer"
               >
                 {yearOptions.map((y) => (
                   <option key={y} value={y}>
@@ -386,21 +386,21 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
                 Vehicle Model <span className="text-rose-500">*</span>
               </label>
               {isLoadingModels ? (
-                <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 rounded-lg text-[11px] text-slate-500">
+                <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 rounded text-[11px] text-slate-500">
                   <Loader2 className="w-3.5 h-3.5 animate-spin text-orange-500" />
                   <span>Loading Models...</span>
                 </div>
               ) : modelsError ? (
                 <div className="text-[10px] text-rose-600 font-semibold">{modelsError}</div>
               ) : modelsList.length === 0 ? (
-                <div className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-[11px] text-slate-400 font-medium">
+                <div className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-400 font-medium">
                   No models found
                 </div>
               ) : (
                 <select
                   value={selectedModel}
                   onChange={(e) => setSelectedModel(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg font-bold text-slate-800 focus:outline-none focus:ring-1.5 focus:ring-orange-500 cursor-pointer"
+                  className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded font-semibold text-slate-800 focus:outline-none focus:ring-1 focus:ring-orange-500 cursor-pointer"
                 >
                   <option value="">-- Select Model ({modelsList.length}) --</option>
                   {modelsList.map((m) => (
@@ -422,7 +422,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">
-                  Daily Rental Rate (£) <span className="text-rose-500">*</span>
+                  Sales Price ($) <span className="text-rose-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -431,7 +431,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
                   value={dailyRate}
                   onChange={(e) => setDailyRate(e.target.value)}
                   placeholder="250"
-                  className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1.5 focus:ring-orange-500 font-bold"
+                  className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 font-semibold"
                 />
               </div>
 
@@ -440,7 +440,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1.5 focus:ring-orange-500 font-semibold cursor-pointer"
+                  className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 font-semibold cursor-pointer"
                 >
                   <option value="Luxury SUV">Luxury SUV</option>
                   <option value="Compact SUV">Compact SUV</option>
@@ -457,7 +457,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
                 <select
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1.5 focus:ring-orange-500 font-semibold cursor-pointer"
+                  className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 font-semibold cursor-pointer"
                 >
                   <option value="London">London, UK</option>
                   <option value="Manchester">Manchester, UK</option>
@@ -472,7 +472,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value as any)}
-                  className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1.5 focus:ring-orange-500 font-semibold cursor-pointer"
+                  className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 font-semibold cursor-pointer"
                 >
                   <option value="Available">Available</option>
                   <option value="Rented">Rented</option>
@@ -487,7 +487,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
                 placeholder="e.g. Eleanor Vance"
-                className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1.5 focus:ring-orange-500 font-medium"
+                className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded focus:outline-none focus:ring-1 focus:ring-orange-500 font-medium"
               />
             </div>
           </div>
@@ -497,13 +497,13 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 font-bold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors text-xs cursor-pointer"
+              className="px-3 py-1.5 font-semibold text-slate-600 hover:bg-slate-100 rounded transition-colors text-xs cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 font-extrabold text-white bg-orange-500 hover:bg-orange-600 rounded-lg shadow-xs shadow-orange-500/30 transition-all text-xs flex items-center gap-1.5 cursor-pointer"
+              className="px-3 py-1.5 font-bold text-white bg-orange-500 hover:bg-orange-600 rounded shadow-xs shadow-orange-500/20 transition-all text-xs flex items-center gap-1.5 cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Confirm & Add Vehicle</span>

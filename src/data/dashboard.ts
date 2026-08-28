@@ -1,5 +1,5 @@
 import { DashboardApiResponse, DashboardFilter } from "@/types/dashboard";
-import { MOCK_USER, MOCK_REVENUE_DATA } from "./mockData";
+import { MOCK_USER, MOCK_REVENUE_DATA, getRevenueAnalyticsForLocation } from "./mockData";
 import { LOCATIONS } from "./locations";
 import { INITIAL_CUSTOMER_VEHICLES } from "./vehicles";
 import { BOOKINGS_STORE, convertBookingsToTransactions } from "./bookings";
@@ -43,8 +43,8 @@ export function getSharedDashboardData(filters: DashboardFilter): DashboardApiRe
     user: MOCK_USER,
     stats: {
       weeklyEarning: {
-        amount: 9500.45,
-        currency: "£",
+        amount: 95000.45,
+        currency: "$",
         percentageChange: 48,
         isIncrease: true,
         comparisonText: "increase compared to last week",
@@ -64,7 +64,7 @@ export function getSharedDashboardData(filters: DashboardFilter): DashboardApiRe
         utilizationRate: 70.2,
       },
     },
-    revenueAnalytics: MOCK_REVENUE_DATA[revenuePeriod] || MOCK_REVENUE_DATA.monthly,
+    revenueAnalytics: getRevenueAnalyticsForLocation(revenuePeriod, locationFilter),
     mostRentedVehicles: filteredVehicles,
     recentTransactions: filteredTx,
     locationsData: locations,

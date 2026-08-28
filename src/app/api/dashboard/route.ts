@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DateRangeOption, DashboardApiResponse, TransactionStatus, Vehicle, Transaction, PaymentMethod } from "@/types/dashboard";
-import { MOCK_USER, MOCK_REVENUE_DATA, MOCK_LOCATIONS, MOCK_VEHICLES, MOCK_TRANSACTIONS, getDashboardData } from "@/data/mockData";
+import { MOCK_USER, MOCK_REVENUE_DATA, MOCK_LOCATIONS, MOCK_VEHICLES, MOCK_TRANSACTIONS, getDashboardData, getRevenueAnalyticsForLocation } from "@/data/mockData";
 import { getVehicleModels } from "@/services/nhtsaApi";
 
 export const dynamic = "force-dynamic";
@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
             paymentMethod: PAYMENT_METHODS[txCounter % PAYMENT_METHODS.length],
             status: txStatus,
             amount: dailyRate,
-            currency: "£",
+            currency: "$",
             date: `2026-08-27 10:${(txCounter % 50).toString().padStart(2, '0')}`,
           });
           txCounter++;
@@ -110,11 +110,11 @@ export async function GET(request: NextRequest) {
     const responseData: DashboardApiResponse = {
       user: MOCK_USER,
       stats: {
-        weeklyEarning: { amount: 9500.45, currency: "£", percentageChange: 48, isIncrease: true, comparisonText: "increase compared to last week" },
+        weeklyEarning: { amount: 95000.45, currency: "$", percentageChange: 48, isIncrease: true, comparisonText: "increase compared to last week" },
         totalSales: { count: 10000, label: "Total Rental Bookings", formattedCount: "10,000+", percentageChange: 24.5, isIncrease: true },
         activeRentals: { count: 800, label: "Active Rentals", formattedCount: "800+", availableVehicles: 340, utilizationRate: 70.2 },
       },
-      revenueAnalytics: MOCK_REVENUE_DATA[revenuePeriod] || MOCK_REVENUE_DATA.monthly,
+      revenueAnalytics: getRevenueAnalyticsForLocation(revenuePeriod, locationFilter),
       mostRentedVehicles: filteredVehicles,
       recentTransactions: filteredTx,
       locationsData: locationFilter && locationFilter !== "All Locations" ? MOCK_LOCATIONS.filter((l) => l.city === locationFilter) : MOCK_LOCATIONS,

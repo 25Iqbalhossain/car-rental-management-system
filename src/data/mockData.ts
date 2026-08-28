@@ -16,9 +16,9 @@ export const MOCK_USER = {
 export const MOCK_VEHICLES: Vehicle[] = [
   {
     id: "nhtsa-1685",
-    name: "TESLA Model S",
-    brand: "TESLA",
-    category: "Sedan",
+    name: "Range Rover",
+    brand: "LAND ROVER",
+    category: "Luxury SUV",
     dailyRate: 260,
     bookingsCount: 6547,
     revenue: 1702220,
@@ -27,18 +27,18 @@ export const MOCK_VEHICLES: Vehicle[] = [
     rating: 4.9,
     modelYear: "2024",
     nhtsaSpecs: {
-      manufacturer: "TESLA",
+      manufacturer: "LAND ROVER",
       modelYear: "2024",
-      bodyClass: "Sedan",
-      fuelType: "Electric",
+      bodyClass: "Luxury SUV",
+      fuelType: "Gasoline",
     },
   },
   {
     id: "nhtsa-7832",
-    name: "PORSCHE 911",
-    brand: "PORSCHE",
-    category: "Sports Coupe",
-    dailyRate: 340,
+    name: "Audi S3",
+    brand: "AUDI",
+    category: "Sedan",
+    dailyRate: 1474,
     bookingsCount: 3474,
     revenue: 1181160,
     image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&q=80&w=400",
@@ -46,18 +46,18 @@ export const MOCK_VEHICLES: Vehicle[] = [
     rating: 4.8,
     modelYear: "2024",
     nhtsaSpecs: {
-      manufacturer: "PORSCHE",
+      manufacturer: "AUDI",
       modelYear: "2024",
-      bodyClass: "Sports Coupe",
+      bodyClass: "Sedan",
       fuelType: "Gasoline",
     },
   },
   {
     id: "nhtsa-1861",
-    name: "HONDA Accord",
-    brand: "HONDA",
+    name: "Blue Nissan",
+    brand: "NISSAN",
     category: "Sedan",
-    dailyRate: 185,
+    dailyRate: 8784,
     bookingsCount: 1478,
     revenue: 273430,
     image: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&q=80&w=400",
@@ -65,7 +65,7 @@ export const MOCK_VEHICLES: Vehicle[] = [
     rating: 4.95,
     modelYear: "2024",
     nhtsaSpecs: {
-      manufacturer: "HONDA",
+      manufacturer: "NISSAN",
       modelYear: "2024",
       bodyClass: "Sedan",
       fuelType: "Gasoline",
@@ -73,10 +73,10 @@ export const MOCK_VEHICLES: Vehicle[] = [
   },
   {
     id: "nhtsa-1709",
-    name: "BMW X5",
-    brand: "BMW",
-    category: "Luxury SUV",
-    dailyRate: 290,
+    name: "Toyota Corolla",
+    brand: "TOYOTA",
+    category: "Economy Sedan",
+    dailyRate: 3240,
     bookingsCount: 987,
     revenue: 286230,
     image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&q=80&w=400",
@@ -84,18 +84,18 @@ export const MOCK_VEHICLES: Vehicle[] = [
     rating: 4.6,
     modelYear: "2024",
     nhtsaSpecs: {
-      manufacturer: "BMW",
+      manufacturer: "TOYOTA",
       modelYear: "2024",
-      bodyClass: "Luxury SUV",
+      bodyClass: "Economy Sedan",
       fuelType: "Gasoline",
     },
   },
   {
     id: "nhtsa-2144",
-    name: "JAGUAR F-PACE",
-    brand: "JAGUAR",
-    category: "Luxury SUV",
-    dailyRate: 275,
+    name: "Compact car",
+    brand: "NISSAN",
+    category: "Compact",
+    dailyRate: 597,
     bookingsCount: 784,
     revenue: 215600,
     image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=400",
@@ -103,9 +103,9 @@ export const MOCK_VEHICLES: Vehicle[] = [
     rating: 4.7,
     modelYear: "2024",
     nhtsaSpecs: {
-      manufacturer: "JAGUAR",
+      manufacturer: "NISSAN",
       modelYear: "2024",
-      bodyClass: "Luxury SUV",
+      bodyClass: "Compact",
       fuelType: "Gasoline",
     },
   }
@@ -123,7 +123,7 @@ export const MOCK_TRANSACTIONS: Transaction[] = [
     paymentMethod: "PayPal",
     status: "Success",
     amount: 260.00,
-    currency: "£",
+    currency: "$",
     date: "2026-08-27 10:45",
   },
   {
@@ -137,7 +137,7 @@ export const MOCK_TRANSACTIONS: Transaction[] = [
     paymentMethod: "Apple Pay",
     status: "Pending",
     amount: 195.00,
-    currency: "£",
+    currency: "$",
     date: "2026-08-27 10:32",
   },
   {
@@ -151,7 +151,7 @@ export const MOCK_TRANSACTIONS: Transaction[] = [
     paymentMethod: "Stripe",
     status: "Success",
     amount: 8784.00,
-    currency: "£",
+    currency: "$",
     date: "2026-08-27 10:15",
   },
   {
@@ -165,7 +165,7 @@ export const MOCK_TRANSACTIONS: Transaction[] = [
     paymentMethod: "PayU",
     status: "Cancelled",
     amount: 3240.00,
-    currency: "£",
+    currency: "$",
     date: "2026-08-27 09:50",
   },
   {
@@ -179,7 +179,7 @@ export const MOCK_TRANSACTIONS: Transaction[] = [
     paymentMethod: "Visa",
     status: "Success",
     amount: 1474.00,
-    currency: "£",
+    currency: "$",
     date: "2026-08-27 08:40",
   }
 ];
@@ -283,6 +283,61 @@ export const MOCK_LOCATIONS: LocationData[] = [
   },
 ];
 
+export function getRevenueAnalyticsForLocation(
+  revenuePeriod: "weekly" | "monthly" | "yearly",
+  locationFilter?: string
+): RevenueAnalyticsData {
+  const baseData = MOCK_REVENUE_DATA[revenuePeriod] || MOCK_REVENUE_DATA.monthly;
+  if (!locationFilter || locationFilter === "All Locations") {
+    return baseData;
+  }
+
+  let factor = 1.0;
+  let offsetShift = 0;
+  const locLower = locationFilter.toLowerCase();
+
+  if (locLower.includes("states") || locLower.includes("york") || locLower.includes("north america")) {
+    factor = 1.45;
+    offsetShift = 2;
+  } else if (locLower.includes("kingdom") || locLower.includes("london") || locLower.includes("europe")) {
+    factor = 1.2;
+    offsetShift = 1;
+  } else if (locLower.includes("asia") || locLower.includes("japan") || locLower.includes("tokyo")) {
+    factor = 0.85;
+    offsetShift = -1;
+  } else if (locLower.includes("south america") || locLower.includes("brazil") || locLower.includes("liverpool")) {
+    factor = 0.75;
+    offsetShift = 3;
+  } else if (locLower.includes("australia") || locLower.includes("oceania") || locLower.includes("leeds")) {
+    factor = 0.65;
+    offsetShift = -2;
+  } else if (locLower.includes("manchester") || locLower.includes("africa")) {
+    factor = 1.05;
+    offsetShift = 0;
+  } else {
+    let hash = 0;
+    for (let i = 0; i < locationFilter.length; i++) {
+      hash = (hash << 5) - hash + locationFilter.charCodeAt(i);
+    }
+    factor = 0.75 + (Math.abs(hash) % 70) / 100;
+    offsetShift = (Math.abs(hash) % 5) - 2;
+  }
+
+  const modifiedData = baseData.data.map((item, idx) => {
+    const variation = Math.sin((idx + offsetShift) * 1.3) * 0.18;
+    const newRevenue = Math.round(item.revenue * (factor + variation));
+    return {
+      ...item,
+      revenue: Math.max(1000, newRevenue),
+    };
+  });
+
+  return {
+    ...baseData,
+    data: modifiedData,
+  };
+}
+
 export function getDashboardData(filters: DashboardFilter): DashboardApiResponse {
   const { dateRange, searchQuery, transactionStatus, revenuePeriod, locationFilter } = filters;
 
@@ -293,13 +348,13 @@ export function getDashboardData(filters: DashboardFilter): DashboardApiResponse
   if (dateRange === "year_to_date") multiplier = 24.5;
   if (dateRange === "custom") multiplier = 1.25;
 
-  const baseEarning = 9500.45 * (dateRange === "this_week" ? 1 : multiplier);
+  const baseEarning = 95000.45 * (dateRange === "this_week" ? 1 : multiplier);
   const baseBookings = Math.round(10000 * (dateRange === "this_week" ? 1 : Math.sqrt(multiplier)));
 
   const stats = {
     weeklyEarning: {
       amount: Math.round(baseEarning * 100) / 100,
-      currency: "£",
+      currency: "$",
       percentageChange: 48,
       isIncrease: true,
       comparisonText: "increase compared to last week",
@@ -354,7 +409,7 @@ export function getDashboardData(filters: DashboardFilter): DashboardApiResponse
     locations = locations.filter((loc) => loc.city === locationFilter);
   }
 
-  const revenueAnalytics = MOCK_REVENUE_DATA[revenuePeriod] || MOCK_REVENUE_DATA.monthly;
+  const revenueAnalytics = getRevenueAnalyticsForLocation(revenuePeriod, locationFilter);
 
   return {
     stats,
