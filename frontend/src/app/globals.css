@@ -7,6 +7,18 @@
   --foreground: #0f172a;
 }
 
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+*, ::before, ::after {
+  box-sizing: border-box;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
@@ -30,6 +42,36 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Sleek subtle scrollbar for chatbot message area */
+.chat-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(203, 213, 225, 0.3) transparent;
+}
+.chat-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.chat-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(203, 213, 225, 0.3);
+  border-radius: 9999px;
+}
+.chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
 /* Admin Layout Fixes */
 .admin-layout {
     display: flex;

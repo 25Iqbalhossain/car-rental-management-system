@@ -2,7 +2,8 @@
 
 import React, { useEffect } from "react";
 import Link from "next/link";
-import { X, Car, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { X, ArrowRight } from "lucide-react";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -31,14 +32,14 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
       {/* Slide-out Panel */}
       <div className="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl flex flex-col z-50 p-6">
         <div className="flex items-center justify-between pb-6 border-b border-slate-100">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-orange-500 flex items-center justify-center text-white font-extrabold shadow-md shadow-orange-500/20">
-              <Car className="w-5 h-5" />
-            </div>
-            <span className="font-extrabold text-lg text-slate-900 tracking-tight">
-              Best Auto
-            </span>
-          </div>
+          <Link href="/" onClick={onClose} className="relative w-[140px] h-[36px] shrink-0 block" title="Digital Pylot">
+            <Image
+              src="/assets/admin/logo.png"
+              alt="Digital Pylot"
+              fill
+              className="object-contain object-left"
+            />
+          </Link>
           <button
             onClick={onClose}
             className="p-2 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
@@ -59,6 +60,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             <Link
               key={item.label}
               href={item.href}
+              prefetch={true}
               onClick={onClose}
               className={`flex items-center justify-between px-4 py-3 rounded-xl font-semibold text-sm transition-colors ${
                 item.isHighlight

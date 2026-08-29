@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Car, Menu, Sparkles, LayoutDashboard, UserPlus, LogIn } from "lucide-react";
+import Image from "next/image";
+import { Menu, Sparkles, LayoutDashboard, UserPlus, LogIn } from "lucide-react";
 import { MobileMenu } from "./MobileMenu";
 
 interface HeaderProps {
@@ -17,18 +18,14 @@ export const CustomerHeader: React.FC<HeaderProps> = ({ onOpenAiModal }) => {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-xl bg-orange-500 flex items-center justify-center text-white font-extrabold shadow-md shadow-orange-500/25 group-hover:scale-105 transition-transform">
-              <Car className="w-5 h-5" />
-            </div>
-            <div>
-              <span className="font-extrabold text-lg text-slate-900 tracking-tight block leading-none">
-                Best Auto
-              </span>
-              <span className="text-[9px] uppercase font-bold tracking-widest text-orange-500">
-                UK Car Rental
-              </span>
-            </div>
+          <Link href="/" className="relative w-[150px] h-[40px] shrink-0 block group" title="Digital Pylot">
+            <Image
+              src="/assets/admin/logo.png"
+              alt="Digital Pylot"
+              fill
+              className="object-contain object-left group-hover:opacity-90 transition-opacity"
+              priority
+            />
           </Link>
 
           {/* Desktop Nav Links */}
@@ -64,6 +61,7 @@ export const CustomerHeader: React.FC<HeaderProps> = ({ onOpenAiModal }) => {
 
             <Link
               href="/admin/dashboard"
+              prefetch={true}
               className="flex items-center gap-1 px-2.5 py-1.5 text-slate-600 hover:text-slate-900 font-semibold text-xs transition-colors"
             >
               <LayoutDashboard className="w-3.5 h-3.5 text-orange-500" />
