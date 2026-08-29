@@ -90,7 +90,7 @@ export function BookingUI(props: any) {
                   disabled={loading}
                   className="w-full py-3.5 bg-orange-500 hover:bg-orange-600 active:scale-[0.99] text-white font-extrabold text-xs rounded-xl shadow-md shadow-orange-500/20 transition-all flex justify-center items-center gap-2 cursor-pointer disabled:opacity-50"
                 >
-                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />} Confirm Booking (£{total})
+                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />} Confirm Booking (${total})
                 </button>
               </form>
             </div>
@@ -98,8 +98,8 @@ export function BookingUI(props: any) {
               <h3 className="text-base font-extrabold border-b pb-3">Vehicle Details</h3>
               <img src={car.image} alt={car.name} className="w-full h-40 object-cover rounded-2xl border" />
               <h4 className="font-extrabold text-base">{car.name}</h4>
-              <p className="text-xs text-slate-500">Rate: £{car.pricePerDay}/day • {days} Days</p>
-              <div className="text-sm font-extrabold text-orange-600 pt-2 border-t flex justify-between"><span>Total:</span><span>£{total}</span></div>
+              <p className="text-xs text-slate-500">Rate: ${car.pricePerDay}/day • {days} Days</p>
+              <div className="text-sm font-extrabold text-orange-600 pt-2 border-t flex justify-between"><span>Total:</span><span>${total}</span></div>
             </div>
           </div>
         )}

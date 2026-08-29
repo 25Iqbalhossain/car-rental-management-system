@@ -98,7 +98,7 @@ export const AiRecommendationModal: React.FC<AiModalProps> = ({ isOpen, onClose,
                         <span className="font-bold text-xs text-slate-900">{vehicle.name}</span>
                         <span className="text-[10px] font-extrabold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">{matchScore}% Match</span>
                       </div>
-                      <p className="text-[11px] text-slate-500">£{vehicle.pricePerDay}/day • {vehicle.seats} Seats</p>
+                      <p className="text-[11px] text-slate-500">${vehicle.pricePerDay}/day • {vehicle.seats} Seats</p>
                       <p className="text-[11px] text-emerald-700 flex items-center gap-1 font-semibold"><CheckCircle2 className="w-3 h-3 text-emerald-600" /> {reason}</p>
                     </div>
                   </div>

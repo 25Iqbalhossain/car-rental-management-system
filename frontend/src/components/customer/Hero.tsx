@@ -99,7 +99,7 @@ export const CustomerHero: React.FC = () => {
                   </div>
                   <div>
                     <span className="text-xs font-bold text-slate-900 block">TESLA Model S</span>
-                    <span className="text-[10px] text-slate-500">100% Electric • £260/day</span>
+                    <span className="text-[10px] text-slate-500">100% Electric • $260/day</span>
                   </div>
                 </div>
               </div>

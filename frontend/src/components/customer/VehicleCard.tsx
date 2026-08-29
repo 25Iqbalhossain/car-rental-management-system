@@ -45,7 +45,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle, onRentNow }) 
         {/* Spacer to push footer to bottom */}
         <div className="mt-auto pt-4 flex items-center justify-between border-t border-slate-100">
           <div>
-            <span className="font-semibold text-slate-900">£{vehicle.pricePerDay.toFixed(2)}</span>
+            <span className="font-semibold text-slate-900">${vehicle.pricePerDay.toFixed(2)}</span>
             <span className="text-xs text-slate-500"> / day</span>
           </div>
 

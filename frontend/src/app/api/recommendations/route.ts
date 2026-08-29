@@ -55,14 +55,14 @@ export async function POST(request: NextRequest) {
       if (maxPrice) {
         if (v.pricePerDay <= maxPrice) {
           score += 15;
-          reasons.push(`Within daily budget (£${v.pricePerDay}/day)`);
+          reasons.push(`Within daily budget ($${v.pricePerDay}/day)`);
         } else {
           score -= 20;
         }
       } else if (prompt.includes("economical") || prompt.includes("cheap") || prompt.includes("budget")) {
         if (v.pricePerDay <= 100) {
           score += 25;
-          reasons.push(`Budget-friendly rate (£${v.pricePerDay}/day)`);
+          reasons.push(`Budget-friendly rate ($${v.pricePerDay}/day)`);
         }
       } else if (prompt.includes("luxury") || prompt.includes("premium") || prompt.includes("sports")) {
         if (v.category.toLowerCase().includes("luxury") || v.category.toLowerCase().includes("sports")) {
