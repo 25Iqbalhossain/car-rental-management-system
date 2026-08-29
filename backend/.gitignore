@@ -17,6 +17,13 @@ env/
 # Audio files generated/used during testing
 *.mp3
 
+# Image files
+*.webp
+*.png
+*.jpg
+*.jpeg
+*.gif
+
 # IDEs / Editors
 .vscode/
 .idea/
