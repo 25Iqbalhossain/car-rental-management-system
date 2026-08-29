@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environments and credentials
+.env
+.venv
+venv/
+ENV/
+env/
+
+# Gradio cache
+.gradio/
+
+# Audio files generated/used during testing
+*.mp3
+
+# IDEs / Editors
+.vscode/
+.idea/
