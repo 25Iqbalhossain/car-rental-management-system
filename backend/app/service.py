@@ -1,4 +1,5 @@
 import json
+import re
 from typing import Any
 
 from groq import Groq
@@ -47,6 +48,52 @@ MEDICAL_KEYWORDS = [
     "therapy",
 ]
 
+GENERIC_OFF_TOPIC_KEYWORDS = [
+    "weather",
+    "cooking",
+    "recipe",
+    "food",
+    "music",
+    "movie",
+    "film",
+    "football",
+    "cricket",
+    "sport",
+    "politics",
+    "election",
+    "prime minister",
+    "history",
+    "math",
+    "maths",
+    "homework",
+    "school",
+    "university",
+    "exam",
+    "poem",
+    "story",
+    "game",
+    "video",
+    "tiktok",
+    "instagram",
+    "facebook",
+]
+
+NO_MATCH_REPLY = (
+    "I'm sorry, I don't have an answer for that yet. I can only help with Digital Pylot "
+    "car rentals — bookings, fleet, locations, pricing, insurance, requirements, and pickup/return. "
+    'Try asking me something like "How do I book a car?" or "What locations do you cover?" '
+    "and I'll be happy to help."
+)
+
+STOP_WORDS = {
+    "you", "your", "yours", "what", "which", "where", "when", "why", "who", "whom",
+    "how", "the", "and", "are", "for", "with", "from", "that", "this", "these",
+    "those", "have", "has", "will", "would", "can", "could", "should", "tell",
+    "about", "does", "do", "is", "am", "was", "were", "been", "it", "its", "my",
+    "me", "mine", "i", "of", "to", "in", "on", "at", "please", "thank", "thanks",
+    "hi", "hello", "hey", "want", "need", "like", "love", "name",
+}
+
 
 def load_knowledge() -> dict[str, Any]:
     if KNOWLEDGE_PATH.exists():
@@ -58,21 +105,45 @@ def load_knowledge() -> dict[str, Any]:
 def is_off_topic(message: str) -> bool:
     lower = message.lower()
     has_medical = any(term in lower for term in MEDICAL_KEYWORDS)
+    has_generic = any(term in lower for term in GENERIC_OFF_TOPIC_KEYWORDS)
     has_rental = any(term in lower for term in RENTAL_KEYWORDS)
-    return has_medical and not has_rental
+    return (has_medical or has_generic) and not has_rental
 
 
 def retrieve_docs(message: str, docs: list[dict[str, Any]], limit: int = 4) -> list[dict[str, Any]]:
-    tokens = [t.lower() for t in message.split() if len(t) > 2]
+    # Regex tokenization mirrors the frontend: punctuation is dropped before
+    # length/stopword filtering so short words like "hi," cannot sneak in.
+    tokens = [
+        t
+        for t in re.findall(r"[a-z0-9$]+", message.lower())
+        if len(t) > 2 and t not in STOP_WORDS
+    ]
     scored = []
     for doc in docs:
-        haystack = f"{doc.get('title','')} {' '.join(doc.get('tags',[]))} {doc.get('content','')}".lower()
-        score = sum(3 if token in doc.get("title", "").lower() else 1 for token in tokens if token in haystack)
-        if score > 0:
+        title = str(doc.get("title", "")).lower()
+        tags_raw = doc.get("tags", [])
+        content = str(doc.get("content", "")).lower()
+
+        score = 0
+        confident = False
+        for token in tokens:
+            tag_hit = any(token in str(tag).lower() or str(tag).lower() in token for tag in tags_raw)
+            title_hit = token in title
+            content_hit = token in content
+            if tag_hit or title_hit:
+                # Curated tag/title overlap = confident match, prevents
+                # incidental words from dumping unrelated knowledge.
+                confident = True
+                score += 3
+            if content_hit:
+                score += 1
+        if confident:
             scored.append((score, doc))
     scored.sort(key=lambda x: x[0], reverse=True)
     results = [item[1] for item in scored[:limit]]
-    return results if results else docs[:3]
+    # IMPORTANT: never return random documents when nothing matches. Empty
+    # results let callers produce a controlled reply instead of dumping data.
+    return results
 
 
 def generate_chat_response(message: str, history: list[ChatMessage]) -> ChatResponse:
@@ -101,10 +172,19 @@ def generate_chat_response(message: str, history: list[ChatMessage]) -> ChatResp
     )
 
     if not GROQ_API_KEY:
-        fallback = matched_docs[0]["content"] if matched_docs else "Welcome to Digital Pylot! Browse our fleet at /vehicles or reserve at /booking."
+        if matched_docs:
+            fallback = matched_docs[0]["content"]
+        else:
+            return ChatResponse(
+                success=True,
+                reply=NO_MATCH_REPLY,
+                source="fallback",
+                citations=[],
+                suggestions=["How do I book a car?", "What vehicles are available?", "What is included in insurance?"],
+            )
         return ChatResponse(
             success=True,
-            reply=f"{fallback} (Set GROQ_API_KEY in backend/.env for live LLM responses)",
+            reply=fallback,
             source="fallback",
             citations=citations,
             suggestions=["How do I book a car?", "What vehicles are available?", "What is included in insurance?"],
@@ -133,10 +213,21 @@ def generate_chat_response(message: str, history: list[ChatMessage]) -> ChatResp
             suggestions=["How do I book a car?", "What vehicles are available?", "What is included in insurance?"],
         )
     except Exception as err:
-        fallback = matched_docs[0]["content"] if matched_docs else "Welcome to Digital Pylot! Browse our fleet at /vehicles."
+        # Technical details stay server-side; the user always gets a clean reply.
+        print(f"[Digital Pylot Chatbot] Groq request failed: {err}")
+        if matched_docs:
+            fallback = matched_docs[0]["content"]
+        else:
+            return ChatResponse(
+                success=True,
+                reply=NO_MATCH_REPLY,
+                source="fallback",
+                citations=[],
+                suggestions=["How do I book a car?", "What vehicles are available?", "What is included in insurance?"],
+            )
         return ChatResponse(
             success=True,
-            reply=f"{fallback} (Groq request fallback: {err})",
+            reply=fallback,
             source="fallback",
             citations=citations,
             suggestions=["How do I book a car?", "What vehicles are available?", "What is included in insurance?"],

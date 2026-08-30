@@ -33,13 +33,17 @@ export async function POST(request: NextRequest) {
 
       if (pyRes.ok) {
         const pyData = await pyRes.json();
-        return NextResponse.json({
-          success: true,
-          reply: pyData.reply,
-          source: "python",
-          citations: pyData.citations || [],
-          suggestions: pyData.suggestions || [],
-        });
+        const pyReply = typeof pyData.reply === "string" && pyData.reply.trim() ? pyData.reply : "";
+        if (pyReply) {
+          return NextResponse.json({
+            success: true,
+            reply: pyReply,
+            source: "python",
+            citations: Array.isArray(pyData.citations) ? pyData.citations : [],
+            suggestions: Array.isArray(pyData.suggestions) ? pyData.suggestions : [],
+          });
+        }
+        // Empty / malformed backend reply -> fall through to local retrieval
       }
     } catch {
       // Fallback to Next.js retrieval service if Python microservice is offline or times out
